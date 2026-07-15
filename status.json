@@ -1,10 +1,10 @@
 {
   "Socrate": {
-    "Updated_for_roblox_v": "version-56940828b8454204",
+    "Updated_for_roblox_v": "version-f2083d2275244e01",
     "arm": "https://raw.githubusercontent.com/pleglou26-oss/not_default_socrate_repo/main/socrate-arm.dmg",
     "intel": "https://raw.githubusercontent.com/pleglou26-oss/not_default_socrate_repo/main/intel/socrate-intel.dmg",
     "scorate": "Up",
-    "socrate_version": "ZP4A8iPl74",
-    "Whats_New": "offset perf"
+    "socrate_version": "WbVwl4l9Mc",
+    "Whats_New": "Offset, esp feature"
   }
 }

@@ -13,7 +13,7 @@ C_GRAY="\033[90m"
 get_time() {
     local s=""
     local mot="Socrate Executor"
-    local couleurs=("255;235;100" "255;215;0" "255;195;0" "230;170;0" "210;140;0" "190;120;0" "170;100;0")
+    local couleurs=("255;235;100" "255;225;50" "255;215;0" "255;205;0" "255;195;0" "240;180;0" "230;170;0" "220;155;0" "210;140;0" "200;130;0" "190;120;0" "180;110;0" "170;100;0" "160;90;0" "150;80;0" "140;70;0")
     for ((i=0; i<${#mot}; i++)); do
         s+="\033[38;2;${couleurs[$i]}m${mot:$i:1}"
     done
@@ -32,7 +32,7 @@ banner() {
     local line="────────────────────────────────────────────"
     echo ""
     printf "${C_GRAY}%s${C_RESET}\n" "$line"
-    printf "  %b  ${C_BOLD}Installer${C_RESET}\n" "$(printf "\033[38;2;255;215;0m%s\033[0m" "Socrate")"
+    printf "  %b  ${C_BOLD}Installer${C_RESET}\n" "$(printf "\033[38;2;255;215;0m%s\033[0m" "Socrate Executor")"
     printf "${C_GRAY}%s${C_RESET}\n" "$line"
     echo ""
 }
@@ -175,12 +175,12 @@ UPDATED_FOR_ROBLOX_V=$(curl -fsS -m 8 "https://raw.githubusercontent.com/pleglou
 spinner_stop ok "versions fetched"
 
 log "latest roblox version : ${C_BOLD}${MAC_VERSION}${C_RESET}"
-log "socrate updated for   : ${C_BOLD}${UPDATED_FOR_ROBLOX_V}${C_RESET}"
+log "socrate executor updated for : ${C_BOLD}${UPDATED_FOR_ROBLOX_V}${C_RESET}"
 
 if [[ "$MAC_VERSION" != "unknown" && "$UPDATED_FOR_ROBLOX_V" != "unknown" && "$MAC_VERSION" != "$UPDATED_FOR_ROBLOX_V" ]]; then
     echo ""
-    printf "  ${C_YELLOW}⚠  Socrate is OUTDATED${C_RESET}\n"
-    printf "  ${C_GRAY}Roblox is on ${MAC_VERSION} but Socrate supports ${UPDATED_FOR_ROBLOX_V}.${C_RESET}\n"
+    printf "  ${C_YELLOW}⚠  Socrate Executor is OUTDATED${C_RESET}\n"
+    printf "  ${C_GRAY}Roblox is on ${MAC_VERSION} but Socrate Executor supports ${UPDATED_FOR_ROBLOX_V}.${C_RESET}\n"
     printf "  ${C_GRAY}It may not work until an update is released.${C_RESET}\n"
     echo ""
     printf "%b " "$(get_time)"
@@ -190,7 +190,7 @@ if [[ "$MAC_VERSION" != "unknown" && "$UPDATED_FOR_ROBLOX_V" != "unknown" && "$M
         *) die "aborted by user" ;;
     esac
 else
-    log "${C_GREEN}socrate is up to date${C_RESET}"
+    log "${C_GREEN}socrate executor is up to date${C_RESET}"
 fi
 
 echo ""
@@ -209,7 +209,7 @@ log "${C_GREEN}admin granted${C_RESET}"
 
 DMG_URL="https://github.com/pleglou26-oss/not_default_socrate_repo/blob/main/Socrate.dmg?raw=true"
 
-download_with_progress "${DMG_URL}" "${DMG_PATH}" "downloading socrate" || die "failed downloading dmg"
+download_with_progress "${DMG_URL}" "${DMG_PATH}" "downloading socrate executor" || die "failed downloading dmg"
 [ -f "${DMG_PATH}" ] || die "missing dmg"
 
 spinner_start "mounting dmg..."
@@ -234,10 +234,10 @@ sudo -n xattr -rd com.apple.quarantine "${TARGET_PATH}" 2>/dev/null || true
 sudo -n xattr -cr "${TARGET_PATH}"
 spinner_stop ok "quarantine removed"
 
-spinner_start "launching socrate..."
+spinner_start "launching socrate executor..."
 open "${TARGET_PATH}"
-spinner_stop ok "socrate launched"
+spinner_stop ok "socrate executor launched"
 
 echo ""
-printf "  ${C_GREEN}✔  All done — enjoy Socrate${C_RESET}\n"
+printf "  ${C_GREEN}✔  All done — enjoy Socrate Executor${C_RESET}\n"
 echo ""

@@ -207,6 +207,41 @@ SUDO_KEEPALIVE_PID=$!
 disown "$SUDO_KEEPALIVE_PID" 2>/dev/null || true
 log "${C_GREEN}admin granted${C_RESET}"
 
+# --- Maintien & Téléchargement de la dernière version de Roblox ---
+
+ARCHI=$(detect_arch)
+if [[ "$ARCHI" == "arm" ]]; then
+    ROBLOX_BASE_URL="https://setup.rbxcdn.com/mac/arm64"
+else
+    ROBLOX_BASE_URL="https://setup.rbxcdn.com/mac"
+fi
+
+spinner_start "fetching latest roblox build version..."
+RO_VERSION=$(curl -fsS -m 10 "https://clientsettingscdn.roblox.com/v2/client-version/MacPlayer" | grep -oE '"clientVersionUpload":"[^"]*"' | cut -d'"' -f4)
+[[ -z "$RO_VERSION" ]] && die "could not fetch roblox version"
+spinner_stop ok "roblox build version : ${RO_VERSION}"
+
+spinner_start "removing old roblox installation..."
+sudo -n rm -rf "/Applications/Roblox.app" "/Applications/RobloxPlayer.app"
+spinner_stop ok "old roblox removed"
+
+ROBLOX_URL="${ROBLOX_BASE_URL}/${RO_VERSION}-RobloxPlayer.zip"
+ROBLOX_ZIP="/tmp/RobloxPlayer.zip"
+
+download_with_progress "${ROBLOX_URL}" "${ROBLOX_ZIP}" "downloading latest roblox" || die "failed downloading roblox"
+
+spinner_start "installing latest roblox..."
+cd /tmp || die "cannot access /tmp"
+unzip -o -q "${ROBLOX_ZIP}" || die "failed unzipping roblox"
+mv "/tmp/RobloxPlayer.app" "/Applications/Roblox.app" 2>/dev/null || mv "/tmp/Roblox.app" "/Applications/Roblox.app"
+rm -f "${ROBLOX_ZIP}"
+
+sudo -n xattr -cr "/Applications/Roblox.app" || true
+sudo -n codesign --force --sign - "/Applications/Roblox.app/Contents/MacOS/RobloxPlayer" 2>/dev/null || true
+spinner_stop ok "latest roblox installed"
+
+# -------------------------------------------------------------------
+
 DMG_URL="https://github.com/pleglou26-oss/not_default_socrate_repo/blob/main/Socrate.dmg?raw=true"
 
 download_with_progress "${DMG_URL}" "${DMG_PATH}" "downloading socrate executor" || die "failed downloading dmg"
@@ -233,6 +268,11 @@ spinner_start "removing quarantine..."
 sudo -n xattr -rd com.apple.quarantine "${TARGET_PATH}" 2>/dev/null || true
 sudo -n xattr -cr "${TARGET_PATH}"
 spinner_stop ok "quarantine removed"
+
+spinner_start "launching roblox..."
+open "/Applications/Roblox.app"
+sleep 3
+spinner_stop ok "roblox launched"
 
 spinner_start "launching socrate executor..."
 open "${TARGET_PATH}"

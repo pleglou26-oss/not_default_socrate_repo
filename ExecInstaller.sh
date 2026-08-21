@@ -207,7 +207,6 @@ SUDO_KEEPALIVE_PID=$!
 disown "$SUDO_KEEPALIVE_PID" 2>/dev/null || true
 log "${C_GREEN}admin granted${C_RESET}"
 
-# --- Maintien & Téléchargement de la dernière version de Roblox ---
 
 ARCHI=$(detect_arch)
 if [[ "$ARCHI" == "arm" ]]; then

@@ -1,10 +1,10 @@
 {
   "Socrate": {
-    "Updated_for_roblox_v": "version-4c4fc877ca9b4c61",
+    "Updated_for_roblox_v": "version-2a3a7efa1a934799",
     "arm": "https://raw.githubusercontent.com/pleglou26-oss/not_default_socrate_repo/main/socrate-arm.dmg",
     "intel": "https://raw.githubusercontent.com/pleglou26-oss/not_default_socrate_repo/main/intel/socrate-intel.dmg",
     "scorate": "up",
     "socrate_version": "TXQau1cDQg",
-    "Whats_New": "decompiler new ui trigger bot stable lua vm mini executor"
+    "Whats_New": "offset upd"
   }
 }

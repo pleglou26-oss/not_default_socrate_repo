@@ -1,10 +1,10 @@
 {
   "Socrate": {
-    "Updated_for_roblox_v": "version-5b15515e80624095",
+    "Updated_for_roblox_v": "version-c53a25dbc3e44a42",
     "arm": "https://raw.githubusercontent.com/pleglou26-oss/not_default_socrate_repo/main/socrate-arm.dmg",
     "intel": "https://raw.githubusercontent.com/pleglou26-oss/not_default_socrate_repo/main/intel/socrate-intel.dmg",
     "scorate": "up",
-    "socrate_version": "jKDdoK6alk",
-    "Whats_New": "Offset update,ps4 ps5 xbox controller support"
+    "socrate_version": "oUIdqYkYoG",
+    "Whats_New": "Offsets update"
   }
 }

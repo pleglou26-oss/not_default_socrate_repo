@@ -169,7 +169,7 @@ banner
 
 spinner_start "checking versions..."
 MAC_VERSION=$(curl -fsS -m 8 -H "User-Agent: WEAO-3PService" "https://weao.xyz/api/versions/current" | jq -r '.Mac' 2>/dev/null)
-UPDATED_FOR_ROBLOX_V="version-31dba3b2537245ce"
+UPDATED_FOR_ROBLOX_V="version-c53a25dbc3e44a42"
 [[ -z "$MAC_VERSION" || "$MAC_VERSION" == "null" ]] && MAC_VERSION="unknown"
 [[ -z "$UPDATED_FOR_ROBLOX_V" || "$UPDATED_FOR_ROBLOX_V" == "null" ]] && UPDATED_FOR_ROBLOX_V="unknown"
 spinner_stop ok "versions fetched"

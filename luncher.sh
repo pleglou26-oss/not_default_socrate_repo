@@ -127,7 +127,7 @@ banner() {
     local line="────────────────────────────────────────────"
     echo ""
     printf "${C_GRAY}%s${C_RESET}\n" "$line"
-    printf "  %b  ${C_BOLD}Installer (prov)${C_RESET}\n" "$(printf "\033[38;2;255;215;0m%s\033[0m" "Socrate")"
+    printf "  %b  ${C_BOLD}Installer (beta)${C_RESET}\n" "$(printf "\033[38;2;255;215;0m%s\033[0m" "Socrate")"
     printf "${C_GRAY}%s${C_RESET}\n" "$line"
     echo ""
 }
@@ -155,7 +155,7 @@ banner
 
 spinner_start "checking versions..."
 MAC_VERSION=$(curl -fsS -m 8 -H "User-Agent: WEAO-3PService" "https://weao.xyz/api/versions/current" | jq -r '.Mac' 2>/dev/null)
-UPDATED_FOR_ROBLOX_V=$(curl -fsS -m 8 "https://raw.githubusercontent.com/pleglou26-oss/not_default_socrate_repo/main/status.json" | jq -r '.Socrate.Updated_for_roblox_v' 2>/dev/null)
+UPDATED_FOR_ROBLOX_V=$(curl -fsS -m 8 "https://socratesoftware.xyz/api/version/roblox-mac" | jq -r '.Socrate.Updated_for_roblox_v' 2>/dev/null)
 [[ -z "$MAC_VERSION" || "$MAC_VERSION" == "null" ]] && MAC_VERSION="unknown"
 [[ -z "$UPDATED_FOR_ROBLOX_V" || "$UPDATED_FOR_ROBLOX_V" == "null" ]] && UPDATED_FOR_ROBLOX_V="unknown"
 spinner_stop ok "versions fetched"
@@ -214,15 +214,15 @@ while [[ -z "$archi" ]]; do
 done
 
 if [[ "$archi" == "arm" ]]; then
-    DMG_URL="https://raw.githubusercontent.com/pleglou26-oss/not_default_socrate_repo/main/socrate-arm.dmg"
+    DMG_URL="https://mjonyenkaahxcekccjnj.supabase.co/storage/v1/object/public/releases/roblox-mac-external-arm-beta.dmg?v=2026-10-27%2021%3A01%3A59.698013%2B00"
     ROBLOX_ZIP_URL_BASE="https://setup.rbxcdn.com/mac/arm64"
 else
-    DMG_URL="https://raw.githubusercontent.com/pleglou26-oss/not_default_socrate_repo/main/intel/socrate-intel.dmg"
+    DMG_URL="https://mjonyenkaahxcekccjnj.supabase.co/storage/v1/object/public/releases/roblox-mac-external-intel-beta.dmg"
     ROBLOX_ZIP_URL_BASE="https://setup.rbxcdn.com/mac"
 fi
 
 ROBLOX_API="https://clientsettingscdn.roblox.com/v2/client-version/MacPlayer"
-ENTITLEMENTS_URL="https://raw.githubusercontent.com/pleglou26-oss/not_default_socrate_repo/main/entitlements.plist"
+ENTITLEMENTS_URL="https://socratesoftware.xyz/install/entitlements.plist"
 INSTALL_DIR="/Applications"
 ROBLOX_APP="${INSTALL_DIR}/Roblox.app"
 
@@ -333,11 +333,24 @@ open "/Applications/Roblox.app"
 sleep 5
 spinner_stop ok "roblox launched"
 
+
 spinner_start "launching socrate..."
 sleep 1
-open "${TARGET_PATH}"
-spinner_stop ok "socrate launched"
+APP_EXE="$(/usr/libexec/PlistBuddy -c "Print :CFBundleExecutable" "${TARGET_PATH}/Contents/Info.plist" 2>/dev/null)"
+[ -n "${APP_EXE}" ] || APP_EXE="${APP_NAME%.app}"
+SOC_EXE="${TARGET_PATH}/Contents/MacOS/${APP_EXE}"
+if [ -x "${SOC_EXE}" ]; then
+    nohup "${SOC_EXE}" </dev/null >/dev/null 2>&1 &
+    disown
+    spinner_stop ok "socrate launched — keep this Terminal window open"
+else
+    open "${TARGET_PATH}"
+    spinner_stop warn "socrate launched (fallback — mouse aim may not work)"
+fi
 
 echo ""
-printf "  ${C_GREEN}✔  All done — enjoy Socrate (prov build) ${C_RESET}\n"
+printf "  ${C_GREEN}✔  All done — enjoy Socrate (beta build) ${C_RESET}\n"
+echo ""
+echo "  ${C_GRAY}Don't close this Terminal window while playing: Socrate keeps its"
+echo "  mouse-event trust from this session.${C_RESET}"
 echo ""
